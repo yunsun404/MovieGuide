@@ -1,0 +1,19 @@
+# 1. Servers 폴더 전체 무시 (BE와 같은 층에 있음)
+/BE/Servers/
+Servers/
+
+# 2. 이클립스 프로젝트 설정 파일 (MovieGuide-main 내부)
+/BE/MovieGuide-main/.settings/
+/BE/MovieGuide-main/.project
+/BE/MovieGuide-main/.classpath
+
+# 3. 이클립스 메타데이터 및 임시 파일
+.metadata/
+bin/
+build/
+*.tmp
+*.bak
+
+# 4. OS 관련 찌꺼기 파일
+.DS_Store
+Thumbs.db
