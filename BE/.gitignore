@@ -1,1 +1,19 @@
-/.metadata/
+# Eclipse metadata
+.metadata/
+.bin/
+.tmp/
+*.tmp
+*.bak
+*.swp
+*~.nib
+local.properties
+.settings/
+.project
+.classpath
+
+# Compiled class files
+*.class
+
+# Build folders
+build/
+bin/
