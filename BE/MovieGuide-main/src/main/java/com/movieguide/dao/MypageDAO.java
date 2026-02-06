@@ -11,21 +11,20 @@ import com.movieguide.dto.UserDTO;
 
 public class MypageDAO {
 	// 1. 유저 정보 읽어오기
-	public UserDTO getUserInfo(String user_id) {
+	public UserDTO getUserInfo(int user_no) {
 		UserDTO dto = null;
-		String sql = "select * from login where user_id=?";
+		String sql = "select * from login where user_no=?";
 		try (Connection conn = DBConnection.getInstance().getConn();
 				PreparedStatement pstmt = conn.prepareStatement(sql);
 				) {
 			
-			pstmt.setString(1, user_id);
+			pstmt.setInt(1, user_no);
 			ResultSet rs = pstmt.executeQuery();
 			
 			while(rs.next()) {
 				dto = new UserDTO();
 				dto.setUserNo(rs.getInt("user_no"));
 				dto.setUserID(rs.getString("user_id"));
-				dto.setUserPW(rs.getString("user_pw"));
 				dto.setUserEmail(rs.getString("user_email"));
 			}
 		} catch (Exception e) {
@@ -50,10 +49,10 @@ public class MypageDAO {
 	        
 	        while(rs.next()) {
 	            GenresDTO dto = new GenresDTO();
-	            dto.setGenresNo(rs.getInt("genre_no"));
-	            dto.setGenresID(rs.getInt("genre_id"));
-	            dto.setGenresLike(rs.getInt("genre_like"));
-	            dto.setGenresName(rs.getString("genre_name"));
+	            dto.setGenresNo(rs.getInt("genres_no"));
+	            dto.setGenresID(rs.getInt("genres_id"));
+	            dto.setGenresLike(rs.getInt("genres_like"));
+	            dto.setGenresName(rs.getString("genres_name"));
 	            list.add(dto);
 	        }
 	    } catch (Exception e) {
@@ -62,51 +61,91 @@ public class MypageDAO {
 	    return list;
 	}
 	
-	// 3. 장르 업데이트 (기존 데이터 삭제 후 일괄 삽입)
-	public int updateGenrePreferences(int userNo, String[] likes, String[] dislikes) {
+	// 3. 장르 종류 읽어오기
+	public List<GenresDTO> getAllGenreNames() {
+	    List<GenresDTO> list = new ArrayList<>();
+	    String sql = "SELECT genres_id, genres_name FROM genres_name ORDER BY genres_id ASC";
+
+	    try (Connection conn = DBConnection.getInstance().getConn();
+	         PreparedStatement pstmt = conn.prepareStatement(sql);
+	         ResultSet rs = pstmt.executeQuery()) {
+
+	        while (rs.next()) {
+	            GenresDTO dto = new GenresDTO();
+	            dto.setGenresID(rs.getInt("genres_id"));
+	            dto.setGenresName(rs.getString("genres_name"));
+	            list.add(dto);
+	        }
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	    }
+	    return list;
+	}
+	
+	// 4. 장르 업데이트
+	public int updateGenrePreferences(int userNo, String[] likes, String[] dislikes, String[] neutrals) {
 	    Connection conn = null;
 	    String deleteSql = "DELETE FROM genres WHERE user_no = ?";
 	    String insertSql = "INSERT INTO genres (user_no, genres_id, genres_like) VALUES (?, ?, ?)";
 
 	    try {
 	        conn = DBConnection.getInstance().getConn();
-	        conn.setAutoCommit(false); // 트랜잭션 시작 (원자성 확보)
+	        conn.setAutoCommit(false); // 트랜잭션 : 끝까지 가면 성공, 중간에 멈추면 되돌리기
 
-	        // [Step 1] 기존 선호/비선호 장르 모두 삭제
+	        // 특정 유저의 선호도 모두 삭제
 	        try (PreparedStatement dPstmt = conn.prepareStatement(deleteSql)) {
 	            dPstmt.setInt(1, userNo);
 	            dPstmt.executeUpdate();
 	        }
 
-	        // [Step 2] 새로운 데이터 삽입
+	        // 새로운 데이터 삽입
 	        try (PreparedStatement iPstmt = conn.prepareStatement(insertSql)) {
-	            // 선호 장르 처리 (like = 1)
+	            // 선호 장르
 	            if (likes != null) {
 	                for (String id : likes) {
 	                    iPstmt.setInt(1, userNo);
 	                    iPstmt.setInt(2, Integer.parseInt(id));
-	                    iPstmt.setInt(3, 1);
+	                    iPstmt.setInt(3, 1); // genres_like = 1
 	                    iPstmt.addBatch();
 	                }
 	            }
-	            // 싫어하는 장르 처리 (like = 0)
+	            // 싫어하는 장르
 	            if (dislikes != null) {
 	                for (String id : dislikes) {
 	                    iPstmt.setInt(1, userNo);
 	                    iPstmt.setInt(2, Integer.parseInt(id));
-	                    iPstmt.setInt(3, 0);
+	                    iPstmt.setInt(3, 2); // genres_like = 2
 	                    iPstmt.addBatch();
 	                }
 	            }
+	            // 선택 안한 장르
+	            if (neutrals != null) {
+	                for (String id : neutrals) {
+	                    iPstmt.setInt(1, userNo);
+	                    iPstmt.setInt(2, Integer.parseInt(id));
+	                    iPstmt.setInt(3, 0); // genres_like = 0
+	                    iPstmt.addBatch();
+	                }
+	            }
+	            
 	            iPstmt.executeBatch(); // 한꺼번에 실행
 	        }
-
-	        conn.commit(); // 모든 쿼리 성공 시 DB 반영
+	        conn.commit(); // 모두 성공하면 커밋
 	        return 1;
+	        
 	    } catch (Exception e) {
-	        try { if(conn != null) conn.rollback(); } catch (Exception ex) {} // 에러 발생 시 되돌리기
+	        try { if(conn != null) conn.rollback(); } catch (Exception ex) {} // 중간에 실패하면 롤백
 	        e.printStackTrace();
 	        return 0;
+	    } finally {
+	    	try {
+	            if (conn != null) {
+	                conn.setAutoCommit(true); 
+	                conn.close();
+	            }
+	        } catch (Exception e) {
+	            e.printStackTrace();
+	        }
 	    }
 	}
 

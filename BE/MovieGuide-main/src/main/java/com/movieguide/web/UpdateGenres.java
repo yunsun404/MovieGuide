@@ -1,8 +1,10 @@
 package com.movieguide.web;
 
 import java.io.IOException;
+import java.util.List;
 
 import com.movieguide.dao.MypageDAO;
+import com.movieguide.dto.GenresDTO;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -20,39 +22,50 @@ public class UpdateGenres extends HttpServlet {
     
     public UpdateGenres() {
         super();
-        // TODO Auto-generated constructor stub
     }
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		response.sendRedirect("./mypage.jsp");
+		// 장르 종류 불러오기
+		MypageDAO dao = new MypageDAO();
+        List<GenresDTO> allGenres = dao.getAllGenreNames(); 
+        
+        // 유저가 선택했던 것들 반영해서 보여주기
+        // 테스트용 (나중에 세션으로 변경)
+        int userNo = 92; 
+        List<GenresDTO> userGenres = dao.getGenrePreferences(userNo);
+        
+        request.setAttribute("allGenres", allGenres);
+        request.setAttribute("userGenres", userGenres);
+        request.getRequestDispatcher("updateGenres.jsp").forward(request, response);
+        
+        // System.out.println("가져온 기존 장르 개수: " + (userGenres != null ? userGenres.size() : "null"));
 	}
 	
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// 1. 세션에서 로그인한 유저 정보 가져오기
-        // int userNo = (int) request.getSession().getAttribute("userNo");
+        // Integer userNo = (Integer) session.getAttribute("userNo");
 		// 일단 테스트를 위해서 1
-        int userNo = 1; 
+        int userNo = 92; 
         
-        if (userNo <= 0) {
-            // 로그인 세션이 없으면 로그인 페이지로 보냄
+        if (userNo <= 0) { // 추후 세션 받는걸로 수정하면 null 인지 아닌지 확인으로 변경
             response.sendRedirect("./login.jsp");
             return;
         }
 
-        // 2. JS에서 생성한 hidden input 값 배열로 받기
+        // 2. js에서 생성한 값 가져오기
         String[] likes = request.getParameterValues("likeGenres");
         String[] dislikes = request.getParameterValues("dislikeGenres");
+        String[] neutrals = request.getParameterValues("neutralGenres");
 
-        // 3. DAO 호출하여 DB 업데이트
+        // 3. db에 업데이트
         MypageDAO dao = new MypageDAO();
-        int result = dao.updateGenrePreferences(userNo, likes, dislikes);
+        int result = dao.updateGenrePreferences(userNo, likes, dislikes, neutrals);
 
-        // 4. 결과에 따른 페이지 이동
+        // 4. 다시 마이페이지로 이동
         if (result > 0) {
-            response.sendRedirect("./mypage.jsp?status=updated");
+            response.sendRedirect("./mypage");
         } else {
-            response.sendRedirect("./editGenres.jsp?error=true");
+            response.sendRedirect("./updateGenres?error=true");
         }
 	}
-
 }

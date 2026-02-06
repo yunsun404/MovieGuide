@@ -29,15 +29,15 @@
 	
 	       
 	       <nav class="header-nav">
-	         <a class="btn btn-ghost nav-link active" href="./recommand.html">추천</a>
+	         <a class="btn btn-ghost nav-link active" href="./recommand">추천</a>
 	         <a class="btn btn-ghost nav-link" href="./wishlist.html">Wishlist</a>
 	       </nav>
 	     </div>
 	
 	     
 	     <nav class="header-actions">
-	       <a class="btn btn-ghost" href="./login.html">마이페이지</a>
-	       <a class="btn btn-primary" href="./signup.html">로그아웃</a>
+	       <a class="btn btn-ghost" href="./mypage">마이페이지</a>
+	       <a class="btn btn-primary" href="./index.html">로그아웃</a>
 	     </nav>
 	
 	   </div>
@@ -48,7 +48,7 @@
         <div class="profile-card">
             <div class="header-row">
                 <h1 class="title">마이페이지</h1>
-                <button class="edit-btn" onclick="location.href='./edit.jsp'"><i class="fas fa-edit"></i>장르 수정</button>
+                <button class="edit-btn" onclick="location.href='./updateGenres'"><i class="fas fa-edit"></i>장르 수정</button>
             </div>
 
             <div class="user-info">
@@ -69,12 +69,11 @@
                 <div class="genre-title">
                     <i class="far fa-thumbs-up" style="color: #e91e63"></i> 선호하는 장르
                 </div>
-                <div class="genre-tags" id="likeGenres"> <!--디비에서 불러오기-->
-                	<div class="tag like">코미디</div>
+                <div class="genre-tags" id="likeGenres"> 
                 	<% if (genresList != null) { 
                 		for (GenresDTO genres : genresList) {
                 			if(genres.getGenresLike() == 1) { %>
-                				<div class="tag like"><%= genres.getGenresID() %></div>
+                				<div class="tag like"><%= genres.getGenresName() %></div>
                 			<% }
                 		}
                 	} %>
@@ -83,12 +82,11 @@
                 <div class="genre-title">
                     <i class="far fa-thumbs-down"></i> 싫어하는 장르
                 </div>
-                <div class="genre-tags" id="dislikeGenres"> <!--디비에서 불러오기-->
-                	<div class="tag dislike">공포</div>
+                <div class="genre-tags" id="dislikeGenres"> 
                 	<% if (genresList != null) { 
                 		for (GenresDTO genres : genresList) {
-                			if(genres.getGenresLike() == 1) { %>
-                				<div class="tag dislike"><%= genres.getGenresID() %></div>
+                			if(genres.getGenresLike() == 2) { %>
+                				<div class="tag dislike"><%= genres.getGenresName() %></div>
                 			<% }
                 		}
                 	} %>
