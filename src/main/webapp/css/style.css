@@ -1,0 +1,461 @@
+:root{
+  --bg: #0b1020;
+  --panel: #101a35;
+  --text: #e8ecff;
+  --muted: #9aa6d6;
+  --accent: #ff4f7b;
+  --line: rgba(255,255,255,0.08);
+}
+
+*{ box-sizing: border-box; }
+body{
+  margin:0;
+  font-family: system-ui, -apple-system, Segoe UI, Roboto, "Noto Sans KR", sans-serif;
+  background: var(--bg);
+  color: var(--text);
+}
+
+.header{
+  position: sticky;
+  top:0;
+  z-index: 50;
+  background: rgba(7, 10, 22, 0.85);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--line);
+}
+.header-inner{
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 14px 16px;
+  display:flex;
+  align-items:center;
+  justify-content: space-between;
+  gap: 12px;
+}
+.brand{
+  display:flex;
+  align-items:center;
+  gap: 10px;
+  text-decoration:none;
+  color: var(--text);
+}
+.brand-logo{
+  width: 28px;
+  height: 28px;
+  object-fit: contain;
+}
+.brand-name{
+  font-weight: 700;
+  letter-spacing: 0.2px;
+}
+
+.header-actions{
+  display:flex;
+  align-items:center;
+  gap: 10px;
+}
+
+.btn{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  padding: 8px 12px;
+  border-radius: 10px;
+  text-decoration:none;
+  font-weight: 600;
+  border: 1px solid transparent;
+}
+.btn-ghost{
+  color: var(--text);
+  background: transparent;
+}
+.btn-primary{
+  color: white;
+  background: var(--accent);
+}
+
+.container{
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 18px 16px 60px;
+}
+
+.section-title{
+  margin: 10px 0 14px;
+}
+.section-title-left{
+  display:flex;
+  align-items:center;
+  gap: 10px;
+}
+.section-title h1{
+  margin:0;
+  font-size: 24px;
+}
+.title-icon{
+  width: 32px;
+  height: 32px;
+  object-fit: contain;
+  opacity: 0.95;
+}
+.subtitle{
+  margin: 6px 0 0;
+  color: var(--muted);
+  font-size: 14px;
+}
+
+.status{
+  margin: 10px 0 14px;
+  color: var(--muted);
+  font-size: 14px;
+}
+
+.grid{
+  display:grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 14px;
+}
+@media (max-width: 1100px){
+  .grid{ grid-template-columns: repeat(4, 1fr); }
+}
+@media (max-width: 860px){
+  .grid{ grid-template-columns: repeat(3, 1fr); }
+}
+@media (max-width: 620px){
+  .grid{ grid-template-columns: repeat(2, 1fr); }
+}
+
+.card{
+  position: relative;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  overflow:hidden;
+}
+.poster{
+  width: 100%;
+  aspect-ratio: 2/3;
+  object-fit: cover;
+  display:block;
+  background: rgba(255,255,255,0.06);
+}
+.card-body{
+  padding: 10px 10px 12px;
+}
+.movie-title{
+  margin:0 0 6px;
+  font-size: 14px;
+  font-weight: 800;
+  line-height: 1.2;
+  min-height: 34px;
+}
+.meta{
+  display:flex;
+  align-items:center;
+  justify-content: space-between;
+  gap: 8px;
+  color: var(--muted);
+  font-size: 12px;
+}
+.badges{
+  display:flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 8px;
+}
+.badge{
+  font-size: 11px;
+  padding: 4px 8px;
+  border-radius: 999px;
+  border: 1px solid var(--line);
+  color: var(--muted);
+}
+
+
+.wish-btn{
+  position:absolute;
+  top: 10px;
+  right: 10px;
+  width: 34px;
+  height: 34px;
+  border-radius: 999px;
+  border: 1px solid var(--line);
+  background: rgba(0,0,0,0.35);
+  color: #ffffff;
+  cursor:pointer;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size: 18px;
+}
+.wish-btn.active{
+  background: var(--accent);
+  border-color: transparent;
+}
+.rank-pill{
+  position: absolute;
+  top: 10px;
+  left: 10px;
+
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+
+  background: #ff4f7b; 
+  border: none;
+
+  color: #ffffff;
+  font-size: 12px;
+  font-weight: 700;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.header-left{
+  display: flex;
+  align-items: center;
+  gap: 24px;
+}
+
+.header-nav{
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+
+.nav-link{
+  color: #ffffff;
+  border: none;
+  background: transparent;   
+}
+
+.nav-link.active{
+  color: #ffffff;
+  background: transparent;   
+  border: none;
+}
+
+.card{
+  transition: transform 0.18s ease, box-shadow 0.18s ease;
+  will-change: transform;
+}
+
+.card:hover{
+  transform: scale(1.03);
+  box-shadow: 0 12px 30px rgba(0,0,0,0.35);
+  z-index: 5;
+}
+
+/* ===============================
+   모달
+=============================== */
+.modal {
+  position: fixed;
+  inset: 0;
+  display: none;
+  justify-content: center;
+  align-items: center;
+  background: rgba(0, 0, 0, 0.35);
+  z-index: 9999;
+}
+
+/* ===============================
+   로그인 / 회원가입 박스
+=============================== */
+.login-box {
+  width: 720px;         /* ⭐ 넓은 모달 */
+  max-width: 92vw;      /* 모바일 대응 */
+  background: linear-gradient(180deg, #1e2a4a, #1a2540);
+  border-radius: 16px;
+  padding: 36px;
+  position: relative;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6);
+}
+
+/* ===============================
+   닫기 버튼
+=============================== */
+.close-btn {
+  position: absolute;
+  top: 14px;
+  right: 16px;
+  background: none;
+  border: none;
+  color: #fff;
+  font-size: 32px;
+  cursor: pointer;
+}
+
+/* ===============================
+   로그인 상단
+=============================== */
+.login-header {
+  text-align: center;
+  margin-bottom: 22px;
+}
+
+.login-logo {
+  height: 32px;
+}
+
+.login-title {
+  text-align: center;
+  margin-bottom: 24px;
+}
+
+/* ===============================
+   폼
+=============================== */
+.login-form input {
+  width: 100%;
+  padding: 12px;
+  border-radius: 8px;
+  border: 1px solid rgba(255,255,255,0.15);
+  margin-bottom: 12px;
+  background: #0f1630;
+  color: white;
+}
+
+.login-form input::placeholder {
+  color: #7f86b2;
+}
+
+/* ===============================
+   버튼
+=============================== */
+.login-submit {
+  width: 100%;
+  padding: 12px;
+  border-radius: 8px;
+  border: none;
+  background: var(--accent);
+  color: white;
+  font-size: 15px;
+  cursor: pointer;
+}
+
+/* ===============================
+   하단 텍스트
+=============================== */
+.login-footer {
+  margin-top: 14px;
+  font-size: 13px;
+  text-align: center;
+  color: #bfc5ff;
+}
+
+.login-footer span {
+  color: var(--accent);
+  cursor: pointer;
+}
+
+/* ===============================
+   장르 선택 설명
+=============================== */
+.signup-step .desc {
+  text-align: center;
+  font-size: 13px;
+  color: #cfd3ff;
+  margin-bottom: 20px;
+}
+
+/* ===============================
+   ⭐ 장르 그리드 (한줄 5개 고정)
+=============================== */
+.genre-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 120px);
+ justify-content: center; /* ⭐ 전체 가운데 */
+  gap: 12px;
+  margin: 24px 0;
+  width: 100%;
+
+ 
+}
+
+/* ===============================
+   장르 카드
+=============================== */
+.genre-card {
+  background: #0f1630;
+  border-radius: 12px;
+  padding: 18px;
+  text-align: center;
+  border: 1px solid rgba(255,255,255,0.1);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  transition: 0.2s;
+ width:120px;
+  height:90px;
+  
+
+}
+
+.genre-card:hover {
+  transform: translateY(-3px);
+  border-color: var(--accent);
+}
+
+.genre-card span {
+  margin-bottom: 8px;
+  font-size: 14px;
+}
+
+/* ===============================
+   👍👎 버튼
+=============================== */
+.vote {
+  display: flex;
+  gap: 10px;
+}
+
+.vote button {
+  background: transparent;
+  border: none;
+  font-size: 20px;
+  cursor: pointer;
+}
+
+/* ===============================
+   ⭐ 선택 상태 스타일 (핵심)
+=============================== */
+
+/* 👍 좋아요 */
+.genre-card.selected-like {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: white;
+}
+
+/* 👎 싫어요 */
+.genre-card.selected-dislike {
+  background: #2a2f45;
+  border-color: #2a2f45;
+  opacity: 0.7;
+}
+
+/* 눌린 이모지 강조 */
+.selected-like .vote button:first-child,
+.selected-dislike .vote button:last-child {
+  transform: scale(1.3);
+}
+
+/* ===============================
+   하단 영역
+=============================== */
+.genre-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 20px;
+}
+
+.warning {
+  font-size: 12px;
+  color: #ffb4b4;
+}
