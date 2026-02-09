@@ -29,7 +29,7 @@
 	
 	       
 	       <nav class="header-nav">
-	         <a class="btn btn-ghost nav-link active" href="./recommand">추천</a>
+	         <a class="btn btn-ghost nav-link active" href="./recommend">추천</a>
 	         <a class="btn btn-ghost nav-link" href="./wishlist.html">Wishlist</a>
 	       </nav>
 	     </div>

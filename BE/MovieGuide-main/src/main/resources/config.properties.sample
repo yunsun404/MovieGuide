@@ -1,0 +1,6 @@
+# TMDB API KEY
+tmdb.api.key=여기에 키 입력
+
+# 키 노출을 막기 위해 파일 생성
+# 1. config.properties 파일을 resource 폴더 안에 생성하고
+# 2. 위의 내용을 복사해서 키만 입력해서 사용

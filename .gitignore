@@ -17,3 +17,6 @@ build/
 # 4. OS 관련 찌꺼기 파일
 .DS_Store
 Thumbs.db
+
+# 5. TMDB API 키
+**/config.properties

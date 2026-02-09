@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>MovieGuide - 추천</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<link rel="stylesheet" href="./css/style.css" />
+</head>
+<body>
+
+    <header class="header">
+	   <div class="header-inner">
+	
+	     
+	     <div class="header-left">
+	       
+	       <a class="brand" href="./index.html">
+	         <img class="brand-logo" src="./img/logo.png" alt="MovieGuide 로고" />
+	         <span class="brand-name">MovieGuide</span>
+	       </a>
+	
+	       
+	       <nav class="header-nav">
+	         <a class="btn btn-ghost nav-link active" href="./recommand">추천</a>
+	         <a class="btn btn-ghost nav-link" href="./wishlist.html">Wishlist</a>
+	       </nav>
+	     </div>
+	
+	     
+	     <nav class="header-actions">
+	       <a class="btn btn-ghost" href="./mypage">마이페이지</a>
+	       <a class="btn btn-primary" href="./index.html">로그아웃</a>
+	     </nav>
+	
+	   </div>
+	</header>
+
+    <main class="main-container">
+        <section class="recommend-info">
+            <h1 class="recommend-title">
+                <i class="fa-solid fa-wand-magic-sparkles" style="color: var(--accent);"></i> 
+                asdf님을 위한 추천
+            </h1>
+            <p class="recommend-desc">선택하신 장르를 기반으로 추천해드립니다</p>
+            
+            <div class="user-genre-tags">
+                <span class="genre-label">선호 장르:</span>
+                <span class="tag like">액션</span>
+                <span class="tag like">드라마</span>
+            </div>
+        </section>
+
+        <div class="movie-grid">
+            <div class="movie-card">
+                <div class="poster-area">
+                    <img src="https://via.placeholder.com/220x330/1a1c32/ffffff?text=Poster" alt="쇼생크 탈출">
+                    <button class="add-wishlist"><i class="fa-solid fa-plus"></i></button>
+                </div>
+                <div class="movie-details">
+                    <h3 class="m-title">쇼생크 탈출</h3>
+                    <p class="m-eng">The Shawshank Redemption</p>
+                    <div class="m-meta">
+                        <span class="m-rating"><i class="fa-solid fa-star"></i> 9.3</span>
+                        <span class="m-year">1994</span>
+                    </div>
+                    <div class="m-tags">
+                        <span class="m-tag">드라마</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="movie-card">
+                <div class="poster-area">
+                    <img src="https://via.placeholder.com/220x330/1a1c32/ffffff?text=Matrix" alt="매트릭스">
+                    <button class="add-wishlist"><i class="fa-solid fa-plus"></i></button>
+                </div>
+                <div class="movie-details">
+                    <h3 class="m-title">매트릭스</h3>
+                    <p class="m-eng">The Matrix</p>
+                    <div class="m-meta">
+                        <span class="m-rating"><i class="fa-solid fa-star"></i> 8.7</span>
+                        <span class="m-year">1999</span>
+                    </div>
+                    <div class="m-tags">
+                        <span class="m-tag">SF</span>
+                        <span class="m-tag">액션</span>
+                    </div>
+                </div>
+            </div>
+            </div>
+    </main>
+</body>
+</html>

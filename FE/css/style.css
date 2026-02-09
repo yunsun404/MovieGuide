@@ -228,7 +228,7 @@
 
 .genre-grid {
     display: grid;
-    grid-template-columns: repeat(5, 1fr); 
+    grid-template-columns: repeat(5, 1fr); /* 5컬럼 레이아웃 */
     gap: 12px;
     margin-bottom: 30px;
 }
@@ -251,13 +251,13 @@
     color: var(--text);
 }
 
-/* 1. 선호하는 장르 활성화 */
+/* 1. 선호하는 장르 (첫 번째 섹션) 활성화 */
 .genre-section > div:nth-child(2) .genre-btn.active {
     background-color: var(--accent) !important;
     color: white !important;
 }
 
-/* 2. 싫어하는 장르 활성화 */
+/* 2. 싫어하는 장르 (두 번째 섹션) 활성화 */
 .genre-section > div:nth-child(4) .genre-btn.active {
     background-color: #4b5563 !important;
     color: white !important;
@@ -285,13 +285,13 @@
 }
 
 .form-actions .btn {
-    flex: 1; 
-    max-width: 120px; 
+    flex: 1; /* 두 버튼이 남은 공간을 똑같이 나눠 가집니다 */
+    max-width: 120px; /* 너무 커지지 않도록 제한 */
 }
 
-/* 저장 버튼이 비활성화되었을 때 */
+/* 저장 버튼이 비활성화(disabled)되었을 때의 스타일 */
 .btn-primary:disabled {
-    background-color: #334155;
+    background-color: #334155; /* 어두운 회색 */
     color: var(--muted);
     cursor: not-allowed;
     opacity: 0.6;
@@ -320,7 +320,6 @@
     }
 }
 
-/* ============= 추천 페이지 ============= */
 /* 본문 컨테이너 */
 .main-container {
     max-width: 1200px;
@@ -346,27 +345,11 @@
     margin-bottom: 20px;
 }
 
-/* 추천 페이지의 선호 장르 컨테이너 */
-.user-genre-tags {
-    display: flex;     
-    flex-wrap: wrap;     
-    align-items: center; 
-    gap: 10px; 
-}
-
-/* 추천 페이지 컨테이너 안에 있는 tag만 속성 변경 */
-.user-genre-tags .tag {
-    display: inline-block; 
-    margin: 0;          
-    white-space: nowrap;   
-}
-
 .genre-label {
     font-size: 0.9rem;
     color: var(--muted);
     margin-right: 8px;
 }
-
 
 /* 영화 그리드 */
 .movie-grid {
@@ -452,7 +435,7 @@
 }
 
 .m-rating {
-    color: #ffc107;
+    color: #ffc107; /* 별점 노란색 */
     font-weight: bold;
 }
 

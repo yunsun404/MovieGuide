@@ -40,6 +40,10 @@ public class Mypage extends HttpServlet {
 			request.setAttribute("genresList", genresList);
 			request.getRequestDispatcher("mypage.jsp").forward(request, response); 
 		} // 로그인이 안되어 있다면 로그인페이지로 이동하는 코드 추가 (else)
+		else {
+	        // 유저 정보가 없을 경우 처리 (예: 로그인 페이지로 리다이렉트)
+	        response.sendRedirect("login.jsp");
+	    }
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
