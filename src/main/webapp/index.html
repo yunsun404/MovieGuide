@@ -1,0 +1,116 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>MovieGuide</title>
+<link rel="stylesheet" href="./css/style.css" />
+</head>
+<body>
+
+	<header class="header">
+		<div class="header-inner">
+
+
+			<div class="header-left">
+
+				<a class="brand" href="./index.html"> <img class="brand-logo"
+					src="./assets/logo.png" alt="MovieGuide 로고" /> <span
+					class="brand-name">MovieGuide</span>
+				</a>
+
+
+				<nav class="header-nav">
+					<a class="btn btn-ghost nav-link" href="/MovieGuide/recommend.html">추천</a>
+					<a class="btn btn-ghost nav-link" href="./wishlist.html">Wishlist</a>
+				</nav>
+			</div>
+
+
+			<nav class="header-actions" id="headerActions">
+				<a class="btn btn-ghost" href="#"
+					onclick="openLogin(); return false;">로그인</a> <a
+					class="btn btn-primary" href="#"
+					onclick="openSignup(); return false;">회원가입</a>
+			</nav>
+
+
+
+		</div>
+	</header>
+
+
+	<main class="container">
+		<section class="section-title">
+			<div class="section-title-left">
+				<img class="title-icon" src="./assets/trophy.png" alt="트로피" />
+				<h1>TOP 100 영화</h1>
+			</div>
+			<p class="subtitle">역대 최고 평점을 받은 영화들을 만나보세요</p>
+		</section>
+
+
+		<div id="status" class="status"></div>
+
+
+		<section id="movieGrid" class="grid"></section>
+	</main>
+	<!-- 로그인 모달 -->
+	<div id="loginModal" class="modal" style="display: none;">
+		<div class="login-box">
+			<button class="close-btn" onclick="closeLogin()">×</button>
+
+			<div class="login-header">
+				<img class="login-logo" src="./assets/logo.png" alt="logo">
+			</div>
+
+			<h2 class="login-title">로그인</h2>
+
+			<form class="login-form">
+				<input id="loginEmail" type="email" placeholder="이메일" required /> <input
+					id="loginPw" type="password" placeholder="비밀번호" required />
+				<button id="loginBtn" class="login-submit">로그인</button>
+			</form>
+
+			<div class="login-footer">
+				계정이 없나요? <span onclick="closeLogin(); openSignup()">회원가입</span>
+			</div>
+		</div>
+	</div>
+
+	<!-- 회원가입 모달 -->
+	<div id="signupModal" class="modal" style="display: none;">
+		<div class="login-box signup-step">
+			<button class="close-btn" onclick="closeSignup()">×</button>
+
+			<div class="login-header">
+				<img class="login-logo" src="./assets/logo.png" alt="logo">
+			</div>
+
+			<h2 class="login-title">회원가입</h2>
+			<p class="desc">회원가입 후 선호 장르를 선택할 수 있어요</p>
+
+			<form class="login-form">
+				<input id="signupName" type="text" placeholder="이름" required /> <input
+					id="signupEmail" type="email" placeholder="이메일" required /> <input
+					id="signupPw" type="password" placeholder="비밀번호" required /> <input
+					id="signupPwCheck" type="password" placeholder="비밀번호 확인" required />
+				<button id="signupBtn" class="login-submit">회원가입</button>
+			</form>
+
+			<!-- 장르 선택(genre.html에 있던 UI를 모달에 넣고 싶으면 아래를 활용) -->
+			<div id="genreSection" style="display: none;">
+				<div id="genreGrid" class="genre-grid"></div>
+				<div class="genre-footer">
+					<span class="warning">👍/👎는 토글됩니다</span>
+					<button id="finishBtn" class="login-submit" type="button">저장</button>
+				</div>
+			</div>
+
+		</div>
+	</div>
+
+	<script src="./login.js"></script>
+	<script src="./main.js"></script>
+</body>
+</html>
