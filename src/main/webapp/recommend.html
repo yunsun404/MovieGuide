@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>MovieGuide - 추천</title>
+
+  <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="./css/style2.css" />
+</head>
+
+<body>
+  <!-- 디버그 영역(원하면 지워도 됨) -->
+  <p id="debugUri" style="color:yellow; display:none;"></p>
+  <p id="debugMovies" style="color:yellow; display:none;"></p>
+
+  <header class="header">
+    <div class="header-inner">
+      <div class="header-left">
+        <a class="brand" href="./index.html">
+          <img class="brand-logo" src="./assets/logo.png" alt="MovieGuide 로고" />
+          <span class="brand-name">MovieGuide</span>
+        </a>
+
+        <nav class="header-nav">
+          <a class="btn btn-ghost nav-link active" href="./recommend.html">추천</a>
+          <a class="btn btn-ghost nav-link" href="./wishlist.html">Wishlist</a>
+        </nav>
+      </div>
+
+      <nav class="header-actions">
+        <a class="btn btn-ghost" href="./mypage">마이페이지</a>
+        <a class="btn btn-primary" href="./index.html">로그아웃</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="main-container">
+    <section class="recommend-info">
+      <h1 class="recommend-title">
+        <i class="fa-solid fa-wand-magic-sparkles" style="color: var(--accent);"></i>
+        <span id = "userIdText"></span> 님을 위한 추천
+      </h1>
+      <p class="recommend-desc">선택하신 장르를 기반으로 추천해드립니다</p>
+
+      <div class="user-genre-tags">
+        <span class="genre-label">선호 장르:</span>
+        <div id="genreTags" class="tag-wrap"></div>
+      </div>
+    </section>
+
+    <!-- 메시지(추천 없음 / 안내) -->
+    <div id="messageBox" class="no-results" style="display:none;"></div>
+
+    <!-- 영화 그리드 -->
+    <div id="movieGrid" class="movie-grid"></div>
+  </main>
+
+  <script src="./recommend.js"></script>
+
+</body>
+</html>
