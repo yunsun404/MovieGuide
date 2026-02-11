@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <title>장르 선택 | MovieGuide</title>
+  <link rel="stylesheet" href="./css/style.css" />
+</head>
+
+<body>
+
+<div class="login-box" style="margin:80px auto; max-width:900px;">
+
+  <h2 class="login-title">선호하는 장르를 선택해주세요</h2>
+
+  <div class="genre-grid" id="genreGrid"></div>
+
+  <div class="genre-footer">
+    <span id="selectionCount" class="warning">
+      최소 1개 이상 선택해주세요
+    </span>
+
+    <button id="finishBtn" class="login-submit" disabled>
+      완료
+    </button>
+  </div>
+
+</div>
+
+
+<script>
+/* =================================
+   ⭐ 장르 선택 로직
+================================= */
+
+let selected = {}; // { genres_id : 1 or 2 }
+
+fetch("/MovieGuide/genre/list")
+.then(res => res.json())
+.then(data => {
+
+  const grid = document.getElementById("genreGrid");
+
+  data.forEach(g => {
+
+    const card = document.createElement("div");
+    card.className = "genre-card";
+
+    card.innerHTML = `
+      <span>${g.name}</span>
+      <div class="vote">
+        <button class="like">👍</button>
+        <button class="hate">👎</button>
+      </div>
+    `;
+
+    const likeBtn = card.querySelector(".like");
+    const hateBtn = card.querySelector(".hate");
+
+    /* 👍 좋아요 */
+    likeBtn.onclick = () => {
+
+      selected[g.id] = 1;
+
+      card.classList.remove("selected-dislike");
+      card.classList.add("selected-like");
+
+      updateBtn();
+    };
+
+    /* 👎 싫어요 */
+    hateBtn.onclick = () => {
+
+      selected[g.id] = 2;
+
+      card.classList.remove("selected-like");
+      card.classList.add("selected-dislike");
+
+      updateBtn();
+    };
+
+    grid.appendChild(card);
+  });
+});
+
+
+function updateBtn(){
+  document.getElementById("finishBtn").disabled =
+    Object.keys(selected).length === 0;
+}
+
+
+/* ===============================
+   저장
+=============================== */
+document.getElementById("finishBtn").onclick = () => {
+
+  fetch("/MovieGuide/genre/select", {
+    method:"POST",
+    headers:{ "Content-Type":"application/json" },
+    body: JSON.stringify(selected)
+  })
+  .then(()=> location.href="/MovieGuide/index.html");
+};
+
+</script>
+
+</body>
+</html>

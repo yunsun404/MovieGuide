@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MovieGuide - 위시리스트</title>
+
+<link rel="stylesheet"
+  href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <link rel="stylesheet" href="./css/style2.css" />
+
+</head>
+
+<body>
+
+<nav class="navbar">
+  <header class="header">
+  <div class="header-inner">
+    <div class="header-left">
+      <a class="brand" href="/MovieGuide/index.html">
+        <img class="brand-logo" src="./assets/logo.png" alt="MovieGuide 로고" />
+        <span class="brand-name">MovieGuide</span>
+      </a>
+
+      <nav class="header-nav">
+        <a class="btn btn-ghost nav-link" href="/MovieGuide/recommend.html">추천</a>
+        <a class="btn btn-ghost nav-link active" href="/MovieGuide/wishlist.html">Wishlist</a>
+      </nav>
+    </div>
+
+    <nav class="header-actions">
+      <!-- ✅ 마이페이지 연동: 네 매핑에 맞게 -->
+      <a class="btn btn-ghost" href="/MovieGuide/mypage">마이페이지</a>
+
+      <!-- ✅ 로그아웃도 서블릿으로 -->
+      <a class="btn btn-primary" href="/MovieGuide/logout">로그아웃</a>
+    </nav>
+  </div>
+</header>
+
+</nav>
+
+<div class="container">
+  <div class="watchlist-header">
+    <div class="title-row">
+      <img src="./assets/bookmark.png" width="30" alt="Bookmark">
+      <h1>보고 싶은 영화</h1>
+    </div>
+    <p class="subtitle">나중에 볼 영화를 저장해두세요</p>
+  </div>
+
+  <div id="content"></div>
+</div>
+
+<script>
+  // ✅ 네 프로젝트 API
+  const API_WISHLIST = "/MovieGuide/api/wishlist"; // GET -> {ok:true, movieIds:[...]} / DELETE ?movieId=...
+  const API_MOVIE = "/MovieGuide/api/movie/";      // GET /api/movie/{id}
+  const IMG_BASE = "https://image.tmdb.org/t/p/w500";
+
+  const container = document.querySelector(".container");
+  const content = document.getElementById("content");
+
+  let movieIds = [];
+
+  function escapeHTML(str=""){
+    return String(str)
+      .replaceAll("&","&amp;")
+      .replaceAll("<","&lt;")
+      .replaceAll(">","&gt;")
+      .replaceAll('"',"&quot;")
+      .replaceAll("'","&#039;");
+  }
+
+  function posterUrl(poster_path){
+    if(!poster_path) return "";
+    if(poster_path.startsWith("http")) return poster_path;
+    if(poster_path.startsWith("/")) return IMG_BASE + poster_path;
+    return IMG_BASE + "/" + poster_path;
+  }
+
+  function renderEmpty(msg1, msg2){
+    content.innerHTML = `
+      <div class="empty-state">
+        <h2>${escapeHTML(msg1)}</h2>
+        <p>${escapeHTML(msg2)}</p>
+      </div>
+    `;
+  }
+
+  async function loadWishlistIds(){
+    const res = await fetch(API_WISHLIST, { credentials:"include" });
+
+    if(res.status === 401){
+      movieIds = [];
+      renderEmpty("로그인이 필요합니다", "로그인 후 위시리스트를 확인할 수 있어요.");
+      return false;
+    }
+
+    const data = await res.json().catch(()=> ({}));
+    if(!res.ok || data.ok === false){
+      throw new Error(data.error || `wishlist 조회 실패 (HTTP ${res.status})`);
+    }
+
+    movieIds = Array.isArray(data.movieIds) ? data.movieIds : [];
+    return true;
+  }
+
+  async function fetchMovieInfo(movieId){
+    const res = await fetch(API_MOVIE + encodeURIComponent(movieId), { credentials:"include" });
+    if(!res.ok) return null;
+    return await res.json().catch(()=>null);
+  }
+
+  async function removeFromWishlist(movieId){
+    const res = await fetch(`${API_WISHLIST}?movieId=${encodeURIComponent(movieId)}`, {
+      method:"DELETE",
+      credentials:"include"
+    });
+
+    if(res.status === 401){
+      throw new Error("로그인이 필요합니다.");
+    }
+
+    const data = await res.json().catch(()=> ({}));
+    if(!res.ok || data.ok === false){
+      throw new Error(data.error || `위시 삭제 실패 (HTTP ${res.status})`);
+    }
+  }
+
+  async function renderWishlist(){
+    if(!movieIds || movieIds.length === 0){
+      renderEmpty("저장된 영화가 없습니다", "마음에 드는 영화를 위시리스트에 추가해보세요");
+      return;
+    }
+
+    content.innerHTML = `
+      <div class="watchlist-content">
+        <div class="count-text">총 ${movieIds.length}개의 영화</div>
+        <div class="movie-grid" id="grid"></div>
+      </div>
+    `;
+
+    const grid = document.getElementById("grid");
+
+    const infos = await Promise.all(movieIds.map(id => fetchMovieInfo(id)));
+
+    infos.forEach((m, idx) => {
+      const id = movieIds[idx];
+
+      const title = m?.title || "제목 없음";
+      const original = m?.original_title || "";
+      const vote = (m?.vote_average ?? 0).toFixed(1);
+      const year = m?.release_date ? m.release_date.split("-")[0] : "";
+      const poster = posterUrl(m?.poster_path);
+
+      const genres = Array.isArray(m?.genres) ? m.genres.map(g=>g.name) : [];
+      const genreHTML = genres.map(g => `<span class="genre-tag">${escapeHTML(g)}</span>`).join("");
+
+      const card = document.createElement("div");
+      card.className = "movie-card";
+      card.innerHTML = `
+        <div class="poster-wrapper">
+          <button class="poster-btn" type="button" data-action="remove" data-movie-id="${id}">
+            <i class="fa-solid fa-minus"></i>
+          </button>
+
+          ${
+            poster
+              ? `<img src="${poster}" alt="${escapeHTML(title)}" />`
+              : `<div style="height:100%;display:flex;align-items:center;justify-content:center;color:#9ca3af;">No Poster</div>`
+          }
+        </div>
+
+        <div class="movie-info">
+          <h2>${escapeHTML(title)}</h2>
+          <p>${escapeHTML(original)}</p>
+
+          <div class="scopeline">
+            <div class="line">
+              <svg class="star-icon" viewBox="0 0 24 24" fill="#FFD700">
+                <path d="M12 2l3.09 6.26L22 9.27l-5 4.87L18.18 22 12 18.56 5.82 22 7 14.14l-5-4.87 6.91-1.01L12 2z"></path>
+              </svg>
+              <h3>${escapeHTML(vote)}</h3>
+            </div>
+            <div class="year"><p>${escapeHTML(year)}</p></div>
+          </div>
+
+          <div class="genre-list">${genreHTML}</div>
+        </div>
+      `;
+      grid.appendChild(card);
+    });
+  }
+
+  // ✅ 삭제 버튼 (이벤트 위임)
+  document.addEventListener("click", async (e) => {
+    const btn = e.target.closest("button[data-action='remove']");
+    if(!btn) return;
+
+    const movieId = btn.dataset.movieId;
+    if(!movieId) return;
+
+    try{
+      btn.disabled = true;
+      await removeFromWishlist(movieId);
+
+      movieIds = movieIds.filter(id => String(id) !== String(movieId));
+      await renderWishlist();
+
+    }catch(err){
+      console.error(err);
+      alert(err.message || "위시리스트 삭제 실패");
+    }finally{
+      btn.disabled = false;
+    }
+  });
+
+  // ✅ init
+  (async function init(){
+    try{
+      const ok = await loadWishlistIds();
+      if(ok) await renderWishlist();
+    }catch(err){
+      console.error(err);
+      renderEmpty("불러오기 실패", err.message || "잠시 후 다시 시도해 주세요.");
+    }
+  })();
+</script>
+
+</body>
+</html>
