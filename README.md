@@ -22,6 +22,7 @@ Personal preference-based movie recommendation site<br>
 - **Database**: MariaDB  
 - **API**: TMDB Open API  
 - **Development Environment**: Eclipse IDE, Apache Tomcat 9, Git, GitHub
+- **Page Design** : Pigma
 
 
 ## 📌 데이터 흐름 구조 
