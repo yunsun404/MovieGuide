@@ -23,6 +23,7 @@ Personal preference-based movie recommendation site<br>
 - **API**: TMDB Open API  
 - **Development Environment**: Eclipse IDE, Apache Tomcat 9, Git, GitHub
 - **Page Design** : Pigma
+- **Data Modeling**: ERD CLOUD
 
 
 ## 📌 데이터 흐름 구조 
